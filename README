@@ -1,0 +1,5 @@
+This is a version of mrdoob's Harmony canvas application, with a little bit of reorganization. I've put the brushstrokes I'm working on in different source files, and I haven't changes any of the original source.
+
+More info about harmony: http://mrdoob.com/blog/post/689
+
+To run, just open harmony.html in a canvas-enabled web browser.
