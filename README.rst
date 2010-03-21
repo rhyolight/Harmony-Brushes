@@ -1,7 +1,10 @@
 This version of mrdoob's and rhyolight's Harmony application aims to provide
 some extra functionality including:
 
-- better palette
+- better palette (bounds + slots interpolated between those)
+- undo/redo
+- gradient background (x/y/others?)
+- scanfill brush
 
 Currently it provides following extra functionality:
 

@@ -11,17 +11,17 @@ var i,
     isForegroundColorSelectorVisible = false,
     isBackgroundColorSelectorVisible = false,
     isAboutVisible = false;
-isForegroundColorSelectorMouseDown = false,
-isBackgroundColorSelectorMouseDown = false,
-isMenuMouseOver = false,
-isMouseDown = false,
-controlKeyIsDown = false,
-xMirrorIsDown = false, // XXX: stash these to controls variable
-yMirrorIsDown = false,
-xyMirrorIsDown = false,
-aKeyIsDown = false, // XXX: stash these to a keyboard variable
-sKeyIsDown = false,
-dKeyIsDown = false;
+    isForegroundColorSelectorMouseDown = false,
+    isBackgroundColorSelectorMouseDown = false,
+    isMenuMouseOver = false,
+    isMouseDown = false,
+    controlKeyIsDown = false,
+    xMirrorIsDown = false, // XXX: stash these to controls variable
+    yMirrorIsDown = false,
+    xyMirrorIsDown = false,
+    aKeyIsDown = false, // XXX: stash these to a keyboard variable
+    sKeyIsDown = false,
+    dKeyIsDown = false;
 init();
 
 function init() {
