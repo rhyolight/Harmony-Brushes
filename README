@@ -1,5 +1,12 @@
-This is a version of mrdoob's Harmony canvas application, with a little bit of reorganization. I've put the brushstrokes I'm working on in different source files, and I haven't changes any of the original source.
+This version of mrdoob's and rhyolight's Harmony application aims to provide
+some extra functionality including:
 
-More info about harmony: http://mrdoob.com/blog/post/689
+* mirroring
+* perspective brush
+* better palette
+
+You can find more information about Harmony at http://mrdoob.com/blog/post/689.
+
+See also http://rhyolight.posterous.com/new-brushes-for-harmony-canvas-app.
 
 To run, just open harmony.html in a canvas-enabled web browser.
