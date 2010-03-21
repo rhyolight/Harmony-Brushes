@@ -21,8 +21,7 @@ curvy.prototype = {
         this.context.strokeStyle = "rgba(" + COLOR[0] + ", " + COLOR[1] + ", " + COLOR[2] + ", 0.5)";
     },
     stroke: function (x,y) {
-        var HISTORY = 10,
-            CTL_PNT1_DIST = 10, 
+        var CTL_PNT1_DIST = 10, 
             CTL_PNT2_DIST = 20,
             START = 30,
             e, start, cOne, cTwo, oldStroke,
