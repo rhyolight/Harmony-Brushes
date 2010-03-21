@@ -272,44 +272,16 @@ function onCanvasMouseDown(a) {
     cleanPopUps();
     isMouseDown = true;
 
-    if(sKeyIsDown) {
-        x = initialX;
-    }
-    else {
-        x = mouseX;
-    }
-
-    if(aKeyIsDown) {
-        y = initialY;
-    }
-    else {
-        y = mouseY;
-    }
-
-    // XXX: move mirrors to a state variable
-    strokeManager.strokeStart(x, y, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown);
+    // XXX: move mirrors and keys to a state variables
+    strokeManager.strokeStart(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
+        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY);
 }
 function onCanvasMouseUp(a) {
     isMouseDown = false;
 
-    if(sKeyIsDown) {
-        x = initialX;
-    }
-    else {
-        x = mouseX;
-    }
-
-    if(aKeyIsDown) {
-        y = initialY;
-    }
-    else {
-        y = mouseY;
-    }
-
-    // XXX: move mirrors to a state variable
-    strokeManager.strokeEnd(x, y, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown);
+    // XXX: move mirrors and keys to a state variables
+    strokeManager.strokeEnd(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
+        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY);
 }
 function onCanvasMouseMove(a) {
     if (!a) {
@@ -322,23 +294,9 @@ function onCanvasMouseMove(a) {
         return
     }
 
-    if(sKeyIsDown) {
-        x = initialX;
-    }
-    else {
-        x = mouseX;
-    }
-
-    if(aKeyIsDown) {
-        y = initialY;
-    }
-    else {
-        y = mouseY;
-    }
-
-    // XXX: move mirrors to a state variable
-    strokeManager.stroke(x, y, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown);
+    // XXX: move mirrors and keys to a state variables
+    strokeManager.stroke(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
+        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY);
 }
 function onCanvasTouchStart(a) {
     if (a.touches.length == 1) {

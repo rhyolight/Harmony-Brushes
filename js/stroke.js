@@ -18,18 +18,22 @@ StrokeManager.prototype = {
         this.xyMirrorStyle = eval("new " + styleClass + "(context)");
     },
     strokeStart: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-            xyMirrorIsDown) {
-        this.style.strokeStart(mouseX, mouseY);
+            xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
+            initialX, initialY) {
+        x = sKeyIsDown? initialX: mouseX;
+        y = aKeyIsDown? initialY: mouseY;
+        
+        this.style.strokeStart(x, y);
 
-        mirrorX = this.canvas.width - mouseX;
-        mirrorY = this.canvas.height - mouseY;
+        mirrorX = this.canvas.width - x;
+        mirrorY = this.canvas.height - y;
 
         if(xMirrorIsDown) {
-            this.xMirrorStyle.strokeStart(mirrorX, mouseY);
+            this.xMirrorStyle.strokeStart(mirrorX, y);
         }
 
         if(yMirrorIsDown) {
-            this.yMirrorStyle.strokeStart(mouseX, mirrorY);
+            this.yMirrorStyle.strokeStart(x, mirrorY);
         }
 
         if((xMirrorIsDown && yMirrorIsDown) || xyMirrorIsDown) {
@@ -37,18 +41,22 @@ StrokeManager.prototype = {
         }
     },
     stroke: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-            xyMirrorIsDown) {
-        this.style.stroke(mouseX, mouseY)
+            xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
+            initialX, initialY) {
+        x = sKeyIsDown? initialX: mouseX;
+        y = aKeyIsDown? initialY: mouseY;
 
-        mirrorX = this.canvas.width - mouseX;
-        mirrorY = this.canvas.height - mouseY;
+        this.style.stroke(x, y);
+
+        mirrorX = this.canvas.width - x;
+        mirrorY = this.canvas.height - y;
 
         if(xMirrorIsDown) {
-            this.xMirrorStyle.stroke(mirrorX, mouseY);
+            this.xMirrorStyle.stroke(mirrorX, y);
         }
 
         if(yMirrorIsDown) {
-            this.yMirrorStyle.stroke(mouseX, mirrorY);
+            this.yMirrorStyle.stroke(x, mirrorY);
         }
 
         if((xMirrorIsDown && yMirrorIsDown) || xyMirrorIsDown) {
@@ -56,22 +64,26 @@ StrokeManager.prototype = {
         }
     },
     strokeEnd: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-            xyMirrorIsDown) {
-        this.style.strokeEnd(mouseX, mouseY)
+            xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
+            initialX, initialY) {
+        x = sKeyIsDown? initialX: mouseX;
+        y = aKeyIsDown? initialY: mouseY;
 
-        mirrorX = this.canvas.width - mouseX;
-        mirrorY = this.canvas.height - mouseY;
+        this.style.strokeEnd(x, y)
+
+        mirrorX = this.canvas.width - x;
+        mirrorY = this.canvas.height - y;
 
         if(xMirrorIsDown) {
-            this.xMirrorStyle.strokeEnd(mirrorX, mouseY);
+            this.xMirrorStyle.strokeEnd(mirrorX, y);
         }
 
         if(yMirrorIsDown) {
-            this.yMirrorStyle.strokeEnd(mouseX, mirrorY);
+            this.yMirrorStyle.strokeEnd(x, mirrorY);
         }
 
         if((xMirrorIsDown && yMirrorIsDown) || xyMirrorIsDown) {
             this.xyMirrorStyle.strokeEnd(mirrorX, mirrorY);
         }
-    }
+    },
 };
