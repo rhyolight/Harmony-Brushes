@@ -216,8 +216,8 @@ function onMenuSelectorChange(e) {
     if (STYLES[menu.selector.selectedIndex] == "") {
         return
     }
-    style.destroy();
-    style = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)");
+    strokeManager.destroy(); // XXX: is this needed?
+    strokeManager.setStyle(STYLES[menu.selector.selectedIndex], context);
     window.location.hash = STYLES[menu.selector.selectedIndex]
 }
 function onMenuMouseOver(a) {
@@ -307,21 +307,30 @@ function onCanvasMouseMove(a) {
 function onCanvasTouchStart(a) {
     if (a.touches.length == 1) {
         var b = a.touches[0];
-        style.strokeStart(b.pageX, b.pageY);
+
+        strokeManager.strokeStart(b.pageX, b.pageY, xMirrorIsDown, yMirrorIsDown,
+            xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX,
+            initialY, targetX, targetY);
         return false
     }
 }
 function onCanvasTouchEnd(a) {
     if (a.touches.length == 1) {
         var b = a.touches[0];
-        style.strokeEnd(b.pageX, b.pageY);
+
+        strokeManager.strokeEnd(b.pageX, b.pageY, xMirrorIsDown, yMirrorIsDown,
+            xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX,
+            initialY, targetX, targetY);
         return false
     }
 }
 function onCanvasTouchMove(a) {
     if (a.touches.length == 1) {
         var b = a.touches[0];
-        style.stroke(b.pageX, b.pageY);
+
+        strokeManager.stroke(b.pageX, b.pageY, xMirrorIsDown, yMirrorIsDown,
+            xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX,
+            initialY, targetX, targetY);
         return false
     }
 }
