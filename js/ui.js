@@ -55,6 +55,11 @@ Menu.prototype = {
         this.yMirror.innerHTML = "Y-Mirror";
         this.container.appendChild(this.yMirror);
 
+        this.xyMirror = document.createElement("span");
+        this.xyMirror.className = "button";
+        this.xyMirror.innerHTML = "Radial Mirror";
+        this.container.appendChild(this.xyMirror);
+
         d = document.createTextNode(" | ");
         this.container.appendChild(d);
         this.save = document.createElement("span");

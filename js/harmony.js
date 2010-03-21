@@ -14,7 +14,8 @@ isMenuMouseOver = false,
 isMouseDown = false,
 controlKeyIsDown = false,
 xMirrorIsDown = false,
-yMirrorIsDown = false;
+yMirrorIsDown = false,
+xyMirrorIsDown = false;
 init();
 
 function init() {
@@ -47,6 +48,7 @@ function init() {
     menu.selector.onchange = onMenuSelectorChange;
     menu.xMirror.addEventListener("click", onMenuXMirror, false);
     menu.yMirror.addEventListener("click", onMenuYMirror, false);
+    menu.xyMirror.addEventListener("click", onMenuXYMirror, false);
     menu.save.addEventListener("click", onMenuSave, false);
     menu.clear.addEventListener("click", onMenuClear, false);
     menu.about.addEventListener("click", onMenuAbout, false);
@@ -193,6 +195,10 @@ function onMenuYMirror() {
     // XXX: this should set button state to pressed/released via css class
     yMirrorIsDown = !yMirrorIsDown;
 }
+function onMenuXYMirror() {
+    // XXX: this should set button state to pressed/released via css class
+    xyMirrorIsDown = !xyMirrorIsDown;
+}
 function onMenuSave() {
     var a = flattenCanvas.getContext("2d");
     a.fillStyle = "rgb(" + BACKGROUND_COLOR[0] + ", " + BACKGROUND_COLOR[1] + ", " + BACKGROUND_COLOR[2] + ")";
@@ -218,17 +224,18 @@ function onCanvasMouseDown(a) {
 
     style.strokeStart(mouseX, mouseY);
 
+    mirrorX = canvas.width - mouseX;
+    mirrorY = canvas.height - mouseY;
+
     if(xMirrorIsDown) {
-        mirrorX = canvas.width - mouseX;
         xMirrorStyle.strokeStart(mirrorX, mouseY);
     }
 
     if(yMirrorIsDown) {
-        mirrorY = canvas.height - mouseY;
         yMirrorStyle.strokeStart(mouseX, mirrorY);
     }
 
-    if(xMirrorIsDown && yMirrorIsDown) {
+    if((xMirrorIsDown && yMirrorIsDown) || xyMirrorIsDown) {
         xyMirrorStyle.strokeStart(mirrorX, mirrorY);
     }
 }
@@ -236,17 +243,18 @@ function onCanvasMouseUp(a) {
     isMouseDown = false;
     style.strokeEnd(mouseX, mouseY)
 
+    mirrorX = canvas.width - mouseX;
+    mirrorY = canvas.height - mouseY;
+
     if(xMirrorIsDown) {
-        mirrorX = canvas.width - mouseX;
         xMirrorStyle.strokeEnd(mirrorX, mouseY);
     }
 
     if(yMirrorIsDown) {
-        mirrorY = canvas.height - mouseY;
         yMirrorStyle.strokeEnd(mouseX, mirrorY);
     }
 
-    if(xMirrorIsDown && yMirrorIsDown) {
+    if((xMirrorIsDown && yMirrorIsDown) || xyMirrorIsDown) {
         xyMirrorStyle.strokeEnd(mirrorX, mirrorY);
     }
 }
@@ -263,17 +271,18 @@ function onCanvasMouseMove(a) {
     
     style.stroke(mouseX, mouseY)
 
+    mirrorX = canvas.width - mouseX;
+    mirrorY = canvas.height - mouseY;
+
     if(xMirrorIsDown) {
-        mirrorX = canvas.width - mouseX;
         xMirrorStyle.stroke(mirrorX, mouseY);
     }
 
     if(yMirrorIsDown) {
-        mirrorY = canvas.height - mouseY;
         yMirrorStyle.stroke(mouseX, mirrorY);
     }
 
-    if(xMirrorIsDown && yMirrorIsDown) {
+    if((xMirrorIsDown && yMirrorIsDown) || xyMirrorIsDown) {
         xyMirrorStyle.stroke(mirrorX, mirrorY);
     }
 }
