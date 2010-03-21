@@ -1,9 +1,14 @@
 This version of mrdoob's and rhyolight's Harmony application aims to provide
 some extra functionality including:
 
-* mirroring
-* perspective brush
-* better palette
+- perspective brush
+- better palette
+
+Currently it provides following extra functionality:
+
+- mirroring (x, y, radial)
+- "sticky" palette (shift). Note that it's not possible to paint under the
+  palette!
 
 You can find more information about Harmony at http://mrdoob.com/blog/post/689.
 
