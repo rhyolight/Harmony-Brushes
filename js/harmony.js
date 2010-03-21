@@ -19,7 +19,6 @@ controlKeyIsDown = false,
 xMirrorIsDown = false, // XXX: stash these to controls variable
 yMirrorIsDown = false,
 xyMirrorIsDown = false,
-setTargetIsDown = false,
 aKeyIsDown = false, // XXX: stash these to a keyboard variable
 sKeyIsDown = false,
 dKeyIsDown = false;
@@ -57,7 +56,6 @@ function init() {
     menu.xMirror.addEventListener("click", onMenuXMirror, false);
     menu.yMirror.addEventListener("click", onMenuYMirror, false);
     menu.xyMirror.addEventListener("click", onMenuXYMirror, false);
-    menu.setTarget.addEventListener("click", onSetTarget, false);
     menu.save.addEventListener("click", onMenuSave, false);
     menu.clear.addEventListener("click", onMenuClear, false);
     menu.about.addEventListener("click", onMenuAbout, false);
@@ -109,6 +107,12 @@ function onDocumentMouseDown(a) {
 }
 function onDocumentKeyDown(a) {
     switch (a.keyCode) {
+    case 80: // p
+        targetX = mouseX;
+        targetY = mouseY;
+
+        console.log('set persp target to x: ' + targetX + ' , y: ' + targetY);
+        break;
     case 65: // a
         if(!aKeyIsDown) {
             initialY = mouseY;
@@ -247,11 +251,6 @@ function onMenuXYMirror() {
 
     setToggle(this, xyMirrorIsDown);
 }
-function onSetTarget() {
-    setTargetIsDown = !setTargetIsDown;
-
-    setToggle(this, setTargetIsDown);
-}
 
 function onMenuSave() {
     var a = flattenCanvas.getContext("2d");
@@ -273,56 +272,44 @@ function onCanvasMouseDown(a) {
     cleanPopUps();
     isMouseDown = true;
 
-    if(setTargetIsDown) {
-        targetX = mouseX;
-        targetY = mouseY;
-
-        console.log('set persp target to x: ' + targetX + ' , y: ' + targetY);
+    if(sKeyIsDown) {
+        x = initialX;
     }
     else {
-        if(sKeyIsDown) {
-            x = initialX;
-        }
-        else {
-            x = mouseX;
-        }
-
-        if(aKeyIsDown) {
-            y = initialY;
-        }
-        else {
-            y = mouseY;
-        }
-
-        // XXX: move mirrors to a state variable
-        strokeManager.strokeStart(x, y, xMirrorIsDown, yMirrorIsDown,
-            xyMirrorIsDown);
+        x = mouseX;
     }
 
+    if(aKeyIsDown) {
+        y = initialY;
+    }
+    else {
+        y = mouseY;
+    }
 
+    // XXX: move mirrors to a state variable
+    strokeManager.strokeStart(x, y, xMirrorIsDown, yMirrorIsDown,
+        xyMirrorIsDown);
 }
 function onCanvasMouseUp(a) {
     isMouseDown = false;
 
-    if(!setTargetIsDown) {
-        if(sKeyIsDown) {
-            x = initialX;
-        }
-        else {
-            x = mouseX;
-        }
-
-        if(aKeyIsDown) {
-            y = initialY;
-        }
-        else {
-            y = mouseY;
-        }
-
-        // XXX: move mirrors to a state variable
-        strokeManager.strokeEnd(x, y, xMirrorIsDown, yMirrorIsDown,
-            xyMirrorIsDown);
+    if(sKeyIsDown) {
+        x = initialX;
     }
+    else {
+        x = mouseX;
+    }
+
+    if(aKeyIsDown) {
+        y = initialY;
+    }
+    else {
+        y = mouseY;
+    }
+
+    // XXX: move mirrors to a state variable
+    strokeManager.strokeEnd(x, y, xMirrorIsDown, yMirrorIsDown,
+        xyMirrorIsDown);
 }
 function onCanvasMouseMove(a) {
     if (!a) {
@@ -335,25 +322,23 @@ function onCanvasMouseMove(a) {
         return
     }
 
-    if(!setTargetIsDown) {
-        if(sKeyIsDown) {
-            x = initialX;
-        }
-        else {
-            x = mouseX;
-        }
-
-        if(aKeyIsDown) {
-            y = initialY;
-        }
-        else {
-            y = mouseY;
-        }
-
-        // XXX: move mirrors to a state variable
-        strokeManager.stroke(x, y, xMirrorIsDown, yMirrorIsDown,
-            xyMirrorIsDown);
+    if(sKeyIsDown) {
+        x = initialX;
     }
+    else {
+        x = mouseX;
+    }
+
+    if(aKeyIsDown) {
+        y = initialY;
+    }
+    else {
+        y = mouseY;
+    }
+
+    // XXX: move mirrors to a state variable
+    strokeManager.stroke(x, y, xMirrorIsDown, yMirrorIsDown,
+        xyMirrorIsDown);
 }
 function onCanvasTouchStart(a) {
     if (a.touches.length == 1) {
