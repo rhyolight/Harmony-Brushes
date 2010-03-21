@@ -808,7 +808,7 @@ About.prototype = {
         this.container.style.visibility = "hidden"
     }
 };
-var i, style, STYLES = ["sketchy", "shaded", "chrome", "stringy", "fur", "longfur", "web", "", "simple", "squares", "ribbon", "", "circles", "grid"],
+var i, style, STYLES = ["sketchy", "shaded", "chrome", "fur", "longfur", "web", "", "simple", "squares", "ribbon", "", "circles", "grid", "", "stringy", "curvy"],
     COLOR = [0, 0, 0],
     BACKGROUND_COLOR = [250, 250, 250],
     SCREEN_WIDTH = window.innerWidth,
