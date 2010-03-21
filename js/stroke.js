@@ -1,3 +1,22 @@
+function project_coordinate(x1, y1, x2, y2, x3, y3) {
+    var x0,y0;
+    dx = x2 - x1;
+    dy = y2 - y1;
+
+    if((dx == 0) && (dy == 0)) {
+        x0 = x1;
+        y0 = y1;
+    }
+    else {
+        t = ((x3 - x1) * dx + (y3 - y1) * dy) / (dx * dx + dy * dy);
+        
+        x0 = x1 + t * dx;
+        y0 = y1 + t * dy;
+    }
+
+    return Array(x0, y0);
+}
+
 function StrokeManager(a) {
     this.init(a)
 }
@@ -19,9 +38,16 @@ StrokeManager.prototype = {
     },
     strokeTemplate: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY, method) {
+            initialX, initialY, targetX, targetY, method) {
         x = sKeyIsDown? initialX: mouseX;
         y = aKeyIsDown? initialY: mouseY;
+
+        if(dKeyIsDown) {
+            projection = project_coordinate(targetX, targetY, initialX,
+                initialY, mouseX, mouseY);
+            x = projection[0];
+            y = projection[1];
+        }
 
         this.style[method](x, y);
 
@@ -42,23 +68,23 @@ StrokeManager.prototype = {
     },
     strokeStart: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY) {
+            initialX, initialY, targetX, targetY) {
         this.strokeTemplate(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY, 'strokeStart');
+            initialX, initialY, targetX, targetY, 'strokeStart');
     },
     stroke: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY) {
+            initialX, initialY, targetX, targetY) {
         this.strokeTemplate(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY, 'stroke');
+            initialX, initialY, targetX, targetY, 'stroke');
     },
     strokeEnd: function (mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY) {
+            initialX, initialY, targetX, targetY) {
         this.strokeTemplate(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
             xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown,
-            initialX, initialY, 'strokeEnd');
+            initialX, initialY, targetX, targetY, 'strokeEnd');
     }
 };

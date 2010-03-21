@@ -1,7 +1,6 @@
 This version of mrdoob's and rhyolight's Harmony application aims to provide
 some extra functionality including:
 
-- perspective brush
 - better palette
 
 Currently it provides following extra functionality:
@@ -11,6 +10,7 @@ Currently it provides following extra functionality:
   palette!
 - vertical constraint (hit s while painting)
 - horizontal constraint (hit a while painting)
+- perspective constraint (hit d while painting, set target with f)
 
 You can find more information about Harmony at http://mrdoob.com/blog/post/689.
 

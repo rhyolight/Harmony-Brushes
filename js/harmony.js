@@ -107,7 +107,7 @@ function onDocumentMouseDown(a) {
 }
 function onDocumentKeyDown(a) {
     switch (a.keyCode) {
-    case 80: // p
+    case 70: // f
         targetX = mouseX;
         targetY = mouseY;
 
@@ -272,16 +272,21 @@ function onCanvasMouseDown(a) {
     cleanPopUps();
     isMouseDown = true;
 
+    initialX = mouseX;
+    initialY = mouseY;
+
     // XXX: move mirrors and keys to a state variables
     strokeManager.strokeStart(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY);
+        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY,
+        targetX, targetY);
 }
 function onCanvasMouseUp(a) {
     isMouseDown = false;
 
     // XXX: move mirrors and keys to a state variables
     strokeManager.strokeEnd(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY);
+        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY,
+        targetX, targetY);
 }
 function onCanvasMouseMove(a) {
     if (!a) {
@@ -296,7 +301,8 @@ function onCanvasMouseMove(a) {
 
     // XXX: move mirrors and keys to a state variables
     strokeManager.stroke(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY);
+        xyMirrorIsDown, aKeyIsDown, sKeyIsDown, dKeyIsDown, initialX, initialY,
+        targetX, targetY);
 }
 function onCanvasTouchStart(a) {
     if (a.touches.length == 1) {
