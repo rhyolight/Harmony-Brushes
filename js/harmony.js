@@ -1,4 +1,4 @@
-var i, style, mirrorStyle,
+var i, style, xMirrorStyle, yMirrorStyle, xyMirrorStyle,
     COLOR = [0, 0, 0],
     BACKGROUND_COLOR = [250, 250, 250],
     SCREEN_WIDTH = window.innerWidth,
@@ -13,7 +13,8 @@ isBackgroundColorSelectorMouseDown = false,
 isMenuMouseOver = false,
 isMouseDown = false,
 controlKeyIsDown = false,
-mirrorIsDown = false;
+xMirrorIsDown = false,
+yMirrorIsDown = false;
 init();
 
 function init() {
@@ -44,7 +45,8 @@ function init() {
     menu.foregroundColor.addEventListener("click", onMenuForegroundColor, false);
     menu.backgroundColor.addEventListener("click", onMenuBackgroundColor, false);
     menu.selector.onchange = onMenuSelectorChange;
-    menu.mirror.addEventListener("click", onMenuMirror, false);
+    menu.xMirror.addEventListener("click", onMenuXMirror, false);
+    menu.yMirror.addEventListener("click", onMenuYMirror, false);
     menu.save.addEventListener("click", onMenuSave, false);
     menu.clear.addEventListener("click", onMenuClear, false);
     menu.about.addEventListener("click", onMenuAbout, false);
@@ -57,7 +59,9 @@ function init() {
         for (i = 0; i < STYLES.length; i++) {
             if (hash == STYLES[i]) {
                 style = eval("new " + STYLES[i] + "(context)");
-                mirrorStyle = eval("new " + STYLES[i] + "(context)"); // XXX: hack
+                xMirrorStyle = eval("new " + STYLES[i] + "(context)"); // XXX: hack
+                yMirrorStyle = eval("new " + STYLES[i] + "(context)"); // XXX: hack
+                xyMirrorStyle = eval("new " + STYLES[i] + "(context)"); // XXX: hack
                 menu.selector.selectedIndex = i;
                 break
             }
@@ -65,7 +69,9 @@ function init() {
     }
     if (!style) {
         style = eval("new " + STYLES[0] + "(context)");
-        mirrorStyle = eval("new " + STYLES[0] + "(context)"); // XXX: hack
+        xMirrorStyle = eval("new " + STYLES[0] + "(context)"); // XXX: hack
+        yMirrorStyle = eval("new " + STYLES[0] + "(context)"); // XXX: hack
+        xyMirrorStyle = eval("new " + STYLES[0] + "(context)"); // XXX: hack
     }
 
     about = new About();
@@ -179,9 +185,13 @@ function onMenuMouseOver(a) {
 function onMenuMouseOut(a) {
     isMenuMouseOver = false
 }
-function onMenuMirror() {
+function onMenuXMirror() {
     // XXX: this should set button state to pressed/released via css class
-    mirrorIsDown = !mirrorIsDown;
+    xMirrorIsDown = !xMirrorIsDown;
+}
+function onMenuYMirror() {
+    // XXX: this should set button state to pressed/released via css class
+    yMirrorIsDown = !yMirrorIsDown;
 }
 function onMenuSave() {
     var a = flattenCanvas.getContext("2d");
@@ -193,7 +203,9 @@ function onMenuSave() {
 function onMenuClear() {
     context.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     style = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)");
-    mirrorStyle = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)"); // XXX: hack
+    xMirrorStyle = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)"); // XXX: hack
+    yMirrorStyle = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)"); // XXX: hack
+    xyMirrorStyle = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)"); // XXX: hack
 }
 function onMenuAbout(a) {
     cleanPopUps();
@@ -206,18 +218,36 @@ function onCanvasMouseDown(a) {
 
     style.strokeStart(mouseX, mouseY);
 
-    if(mirrorIsDown) {
+    if(xMirrorIsDown) {
         mirrorX = canvas.width - mouseX;
-        mirrorStyle.strokeStart(mirrorX, mouseY);
+        xMirrorStyle.strokeStart(mirrorX, mouseY);
+    }
+
+    if(yMirrorIsDown) {
+        mirrorY = canvas.height - mouseY;
+        yMirrorStyle.strokeStart(mouseX, mirrorY);
+    }
+
+    if(xMirrorIsDown && yMirrorIsDown) {
+        xyMirrorStyle.strokeStart(mirrorX, mirrorY);
     }
 }
 function onCanvasMouseUp(a) {
     isMouseDown = false;
     style.strokeEnd(mouseX, mouseY)
 
-    if(mirrorIsDown) {
+    if(xMirrorIsDown) {
         mirrorX = canvas.width - mouseX;
-        mirrorStyle.strokeEnd(mirrorX, mouseY);
+        xMirrorStyle.strokeEnd(mirrorX, mouseY);
+    }
+
+    if(yMirrorIsDown) {
+        mirrorY = canvas.height - mouseY;
+        yMirrorStyle.strokeEnd(mouseX, mirrorY);
+    }
+
+    if(xMirrorIsDown && yMirrorIsDown) {
+        xyMirrorStyle.strokeEnd(mirrorX, mirrorY);
     }
 }
 function onCanvasMouseMove(a) {
@@ -233,9 +263,18 @@ function onCanvasMouseMove(a) {
     
     style.stroke(mouseX, mouseY)
 
-    if(mirrorIsDown) {
+    if(xMirrorIsDown) {
         mirrorX = canvas.width - mouseX;
-        mirrorStyle.stroke(mirrorX, mouseY);
+        xMirrorStyle.stroke(mirrorX, mouseY);
+    }
+
+    if(yMirrorIsDown) {
+        mirrorY = canvas.height - mouseY;
+        yMirrorStyle.stroke(mouseX, mirrorY);
+    }
+
+    if(xMirrorIsDown && yMirrorIsDown) {
+        xyMirrorStyle.stroke(mirrorX, mirrorY);
     }
 }
 function onCanvasTouchStart(a) {

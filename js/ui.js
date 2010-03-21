@@ -45,10 +45,15 @@ Menu.prototype = {
         c = document.createTextNode(" ");
         this.container.appendChild(c);
 
-        this.mirror = document.createElement("span");
-        this.mirror.className = "button";
-        this.mirror.innerHTML = "Mirror";
-        this.container.appendChild(this.mirror);
+        this.xMirror = document.createElement("span");
+        this.xMirror.className = "button";
+        this.xMirror.innerHTML = "X-Mirror";
+        this.container.appendChild(this.xMirror);
+
+        this.yMirror = document.createElement("span");
+        this.yMirror.className = "button";
+        this.yMirror.innerHTML = "Y-Mirror";
+        this.container.appendChild(this.yMirror);
 
         d = document.createTextNode(" | ");
         this.container.appendChild(d);
