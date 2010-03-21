@@ -187,18 +187,32 @@ function onMenuMouseOver(a) {
 function onMenuMouseOut(a) {
     isMenuMouseOver = false
 }
-function onMenuXMirror() {
-    // XXX: this should set button state to pressed/released via css class
+
+function setToggle(e, state) {
+    // XXX: could be nicer (set via css class or so)
+    if(state) {
+        e.style.color = '#00DD00';
+    }
+    else {
+        e.style.color = '#000000';
+    }
+}
+function onMenuXMirror(a) {
     xMirrorIsDown = !xMirrorIsDown;
+
+    setToggle(this, xMirrorIsDown);
 }
 function onMenuYMirror() {
-    // XXX: this should set button state to pressed/released via css class
     yMirrorIsDown = !yMirrorIsDown;
+
+    setToggle(this, yMirrorIsDown);
 }
 function onMenuXYMirror() {
-    // XXX: this should set button state to pressed/released via css class
     xyMirrorIsDown = !xyMirrorIsDown;
+
+    setToggle(this, xyMirrorIsDown);
 }
+
 function onMenuSave() {
     var a = flattenCanvas.getContext("2d");
     a.fillStyle = "rgb(" + BACKGROUND_COLOR[0] + ", " + BACKGROUND_COLOR[1] + ", " + BACKGROUND_COLOR[2] + ")";
