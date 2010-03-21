@@ -1,18 +1,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
-	<head>
-		<title>
+    <head>
+        <title>
 			Harmony - Procedural drawing tool
-		</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-		<style type="text/css">
-* { color: #555; font-family:Monospace; font-size:12px; } body { margin: 0px; overflow: hidden; } select { text-transform: uppercase; font-size:11px; text-align:center; } hr { border: 0; height: 1px; background-color: #ccc; margin: 20px 0px; } .gui { color: #ccc; width: 280px; background-color: #fff; border-bottom: 1px solid #ddd; padding: 5px 10px; text-align: center; text-transform: uppercase; cursor: default; } .button { padding: 2px; cursor: pointer; }
-		</style>
-	</head>
-	<body>
-	    <script type="text/javascript" src="js/stringy.js"></script>
-	    <script type="text/javascript" src="js/curvy.js"></script>
-		<script type="text/javascript" src="js/harmony.js"></script>
-	</body>
+        </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+        <style type="text/css">
+            * { color: #555; font-family:Monospace; font-size:12px; } body { margin: 0px; overflow: hidden; } select { text-transform: uppercase; font-size:11px; text-align:center; } hr { border: 0; height: 1px; background-color: #ccc; margin: 20px 0px; } .gui { color: #ccc; width: 280px; background-color: #fff; border-bottom: 1px solid #ddd; padding: 5px 10px; text-align: center; text-transform: uppercase; cursor: default; } .button { padding: 2px; cursor: pointer; }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+        var STYLES = ["sketchy", "shaded", "chrome", "fur", "longfur", "web",
+            "", "simple", "squares", "ribbon", "", "circles", "grid", "",
+            "stringy", "curvy"];
+
+        function importScript(url){
+            // http://www.webmaster-talk.com/javascript-forum/87702-import-javascript-in-javascript.html
+            var tag = document.createElement("script");
+            tag.type="text/javascript";
+            tag.src = url;
+            document.body.appendChild(tag);
+        }
+
+        for (var i in STYLES) {
+            var styleName = STYLES[i];
+
+            if(styleName) {
+                importScript("js/brushes/" + styleName + ".js");
+            }
+        }
+        </script>
+        <script type="text/javascript" src="js/tools.js"></script>
+        <script type="text/javascript" src="js/ui.js"></script>
+        <script type="text/javascript" src="js/harmony.js"></script>
+    </body>
 </html>
