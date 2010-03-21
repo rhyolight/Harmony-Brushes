@@ -9,6 +9,8 @@ Currently it provides following extra functionality:
 - mirroring (x, y, radial)
 - "sticky" palette (shift). Note that it's not possible to paint under the
   palette!
+- vertical constraint (hit s while painting)
+- horizontal constraint (hit a while painting)
 
 You can find more information about Harmony at http://mrdoob.com/blog/post/689.
 

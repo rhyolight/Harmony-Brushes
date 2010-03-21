@@ -62,6 +62,14 @@ Menu.prototype = {
 
         d = document.createTextNode(" | ");
         this.container.appendChild(d);
+
+        this.setTarget = document.createElement("span");
+        this.setTarget.className = "button";
+        this.setTarget.innerHTML = "Set Perspective Target";
+        this.container.appendChild(this.setTarget);
+
+        d = document.createTextNode(" | ");
+        this.container.appendChild(d);
         this.save = document.createElement("span");
         this.save.className = "button";
         this.save.innerHTML = "Save";

@@ -1,10 +1,13 @@
 var i,
     COLOR = [0, 0, 0],
+    targetX = 0, targetY = 0,
     BACKGROUND_COLOR = [250, 250, 250],
     SCREEN_WIDTH = window.innerWidth,
     SCREEN_HEIGHT = window.innerHeight,
     strokeManager, container, foregroundColorSelector, backgroundColorSelector,
-    menu, about, canvas, flattenCanvas, context, mouseX = 0, mouseY = 0,
+    menu, about, canvas, flattenCanvas, context,
+    initialX, initialY,
+    mouseX = 0, mouseY = 0,
     isForegroundColorSelectorVisible = false,
     isBackgroundColorSelectorVisible = false,
     isAboutVisible = false;
@@ -13,9 +16,13 @@ isBackgroundColorSelectorMouseDown = false,
 isMenuMouseOver = false,
 isMouseDown = false,
 controlKeyIsDown = false,
-xMirrorIsDown = false,
+xMirrorIsDown = false, // XXX: stash these to controls variable
 yMirrorIsDown = false,
-xyMirrorIsDown = false;
+xyMirrorIsDown = false,
+setTargetIsDown = false,
+aKeyIsDown = false, // XXX: stash these to a keyboard variable
+sKeyIsDown = false,
+dKeyIsDown = false;
 init();
 
 function init() {
@@ -50,6 +57,7 @@ function init() {
     menu.xMirror.addEventListener("click", onMenuXMirror, false);
     menu.yMirror.addEventListener("click", onMenuYMirror, false);
     menu.xyMirror.addEventListener("click", onMenuXYMirror, false);
+    menu.setTarget.addEventListener("click", onSetTarget, false);
     menu.save.addEventListener("click", onMenuSave, false);
     menu.clear.addEventListener("click", onMenuClear, false);
     menu.about.addEventListener("click", onMenuAbout, false);
@@ -101,7 +109,29 @@ function onDocumentMouseDown(a) {
 }
 function onDocumentKeyDown(a) {
     switch (a.keyCode) {
-    case 16:
+    case 65: // a
+        if(!aKeyIsDown) {
+            initialY = mouseY;
+        }
+
+        aKeyIsDown = true;
+        break;
+    case 83: // s
+        if(!sKeyIsDown) {
+            initialX = mouseX;
+        }
+
+        sKeyIsDown = true;
+        break;
+    case 68: // d
+        if(!dKeyIsDown) {
+            initialX = mouseX;
+            initialY = mouseY;
+        }
+
+        dKeyIsDown = true;
+        break;
+    case 16: // shift
         if(controlKeyIsDown) {
             controlKeyIsDown = false;
             foregroundColorSelector.container.style.visibility = "hidden";
@@ -116,10 +146,17 @@ function onDocumentKeyDown(a) {
     }
 }
 function onDocumentKeyUp(a) {
-    //switch (a.keyCode) {
-    //case 16:
-        //break
-    //}
+    switch (a.keyCode) {
+    case 65: // a
+        aKeyIsDown = false;
+        break;
+    case 83: // s
+        sKeyIsDown = false;
+        break;
+    case 68: // d
+        dKeyIsDown = false;
+        break;
+    }
 }
 function onForegroundColorSelectorMouseDown(a) {
     isForegroundColorSelectorMouseDown = true
@@ -210,6 +247,11 @@ function onMenuXYMirror() {
 
     setToggle(this, xyMirrorIsDown);
 }
+function onSetTarget() {
+    setTargetIsDown = !setTargetIsDown;
+
+    setToggle(this, setTargetIsDown);
+}
 
 function onMenuSave() {
     var a = flattenCanvas.getContext("2d");
@@ -231,16 +273,56 @@ function onCanvasMouseDown(a) {
     cleanPopUps();
     isMouseDown = true;
 
-    // XXX: move mirrors to a state variable
-    strokeManager.strokeStart(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown);
+    if(setTargetIsDown) {
+        targetX = mouseX;
+        targetY = mouseY;
+
+        console.log('set persp target to x: ' + targetX + ' , y: ' + targetY);
+    }
+    else {
+        if(sKeyIsDown) {
+            x = initialX;
+        }
+        else {
+            x = mouseX;
+        }
+
+        if(aKeyIsDown) {
+            y = initialY;
+        }
+        else {
+            y = mouseY;
+        }
+
+        // XXX: move mirrors to a state variable
+        strokeManager.strokeStart(x, y, xMirrorIsDown, yMirrorIsDown,
+            xyMirrorIsDown);
+    }
+
+
 }
 function onCanvasMouseUp(a) {
     isMouseDown = false;
 
-    // XXX: move mirrors to a state variable
-    strokeManager.strokeEnd(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown);
+    if(!setTargetIsDown) {
+        if(sKeyIsDown) {
+            x = initialX;
+        }
+        else {
+            x = mouseX;
+        }
+
+        if(aKeyIsDown) {
+            y = initialY;
+        }
+        else {
+            y = mouseY;
+        }
+
+        // XXX: move mirrors to a state variable
+        strokeManager.strokeEnd(x, y, xMirrorIsDown, yMirrorIsDown,
+            xyMirrorIsDown);
+    }
 }
 function onCanvasMouseMove(a) {
     if (!a) {
@@ -253,9 +335,25 @@ function onCanvasMouseMove(a) {
         return
     }
 
-    // XXX: move mirrors to a state variable
-    strokeManager.stroke(mouseX, mouseY, xMirrorIsDown, yMirrorIsDown,
-        xyMirrorIsDown);
+    if(!setTargetIsDown) {
+        if(sKeyIsDown) {
+            x = initialX;
+        }
+        else {
+            x = mouseX;
+        }
+
+        if(aKeyIsDown) {
+            y = initialY;
+        }
+        else {
+            y = mouseY;
+        }
+
+        // XXX: move mirrors to a state variable
+        strokeManager.stroke(x, y, xMirrorIsDown, yMirrorIsDown,
+            xyMirrorIsDown);
+    }
 }
 function onCanvasTouchStart(a) {
     if (a.touches.length == 1) {
