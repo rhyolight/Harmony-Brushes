@@ -89,25 +89,26 @@ function onDocumentMouseDown(a) {
     return isMenuMouseOver
 }
 function onDocumentKeyDown(a) {
-    if (controlKeyIsDown) {
-        return
-    }
     switch (a.keyCode) {
     case 16:
-        controlKeyIsDown = true;
-        foregroundColorSelector.container.style.left = mouseX - 125 + "px";
-        foregroundColorSelector.container.style.top = mouseY - 125 + "px";
-        foregroundColorSelector.container.style.visibility = "visible";
+        if(controlKeyIsDown) {
+            controlKeyIsDown = false;
+            foregroundColorSelector.container.style.visibility = "hidden";
+        }
+        else {
+            controlKeyIsDown = true;
+            foregroundColorSelector.container.style.left = mouseX - 125 + "px";
+            foregroundColorSelector.container.style.top = mouseY - 125 + "px";
+            foregroundColorSelector.container.style.visibility = "visible";
+        }
         break
     }
 }
 function onDocumentKeyUp(a) {
-    switch (a.keyCode) {
-    case 16:
-        controlKeyIsDown = false;
-        foregroundColorSelector.container.style.visibility = "hidden";
-        break
-    }
+    //switch (a.keyCode) {
+    //case 16:
+        //break
+    //}
 }
 function onForegroundColorSelectorMouseDown(a) {
     isForegroundColorSelectorMouseDown = true
