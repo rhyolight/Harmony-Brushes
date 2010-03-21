@@ -1,4 +1,4 @@
-var i, style,
+var i, style, mirrorStyle,
     COLOR = [0, 0, 0],
     BACKGROUND_COLOR = [250, 250, 250],
     SCREEN_WIDTH = window.innerWidth,
@@ -12,7 +12,8 @@ isForegroundColorSelectorMouseDown = false,
 isBackgroundColorSelectorMouseDown = false,
 isMenuMouseOver = false,
 isMouseDown = false,
-controlKeyIsDown = false;
+controlKeyIsDown = false,
+mirrorIsDown = false;
 init();
 
 function init() {
@@ -43,6 +44,7 @@ function init() {
     menu.foregroundColor.addEventListener("click", onMenuForegroundColor, false);
     menu.backgroundColor.addEventListener("click", onMenuBackgroundColor, false);
     menu.selector.onchange = onMenuSelectorChange;
+    menu.mirror.addEventListener("click", onMenuMirror, false);
     menu.save.addEventListener("click", onMenuSave, false);
     menu.clear.addEventListener("click", onMenuClear, false);
     menu.about.addEventListener("click", onMenuAbout, false);
@@ -55,14 +57,17 @@ function init() {
         for (i = 0; i < STYLES.length; i++) {
             if (hash == STYLES[i]) {
                 style = eval("new " + STYLES[i] + "(context)");
+                mirrorStyle = eval("new " + STYLES[i] + "(context)"); // XXX: hack
                 menu.selector.selectedIndex = i;
                 break
             }
         }
     }
     if (!style) {
-        style = eval("new " + STYLES[0] + "(context)")
+        style = eval("new " + STYLES[0] + "(context)");
+        mirrorStyle = eval("new " + STYLES[0] + "(context)"); // XXX: hack
     }
+
     about = new About();
     container.appendChild(about.container);
     window.onresize = onWindowResize;
@@ -174,6 +179,10 @@ function onMenuMouseOver(a) {
 function onMenuMouseOut(a) {
     isMenuMouseOver = false
 }
+function onMenuMirror() {
+    // XXX: this should set button state to pressed/released via css class
+    mirrorIsDown = !mirrorIsDown;
+}
 function onMenuSave() {
     var a = flattenCanvas.getContext("2d");
     a.fillStyle = "rgb(" + BACKGROUND_COLOR[0] + ", " + BACKGROUND_COLOR[1] + ", " + BACKGROUND_COLOR[2] + ")";
@@ -183,7 +192,8 @@ function onMenuSave() {
 }
 function onMenuClear() {
     context.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    style = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)")
+    style = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)");
+    mirrorStyle = eval("new " + STYLES[menu.selector.selectedIndex] + "(context)"); // XXX: hack
 }
 function onMenuAbout(a) {
     cleanPopUps();
@@ -193,22 +203,40 @@ function onMenuAbout(a) {
 function onCanvasMouseDown(a) {
     cleanPopUps();
     isMouseDown = true;
-    style.strokeStart(mouseX, mouseY)
+
+    style.strokeStart(mouseX, mouseY);
+
+    if(mirrorIsDown) {
+        mirrorX = canvas.width - mouseX;
+        mirrorStyle.strokeStart(mirrorX, mouseY);
+    }
 }
 function onCanvasMouseUp(a) {
     isMouseDown = false;
     style.strokeEnd(mouseX, mouseY)
+
+    if(mirrorIsDown) {
+        mirrorX = canvas.width - mouseX;
+        mirrorStyle.strokeEnd(mirrorX, mouseY);
+    }
 }
 function onCanvasMouseMove(a) {
     if (!a) {
         a = window.event
     }
-    mouseX = a.clientX; // XXX: canvas.width - clientX (add mirror)
+
+    mouseX = a.clientX;
     mouseY = a.clientY;
     if (!isMouseDown) {
         return
     }
+    
     style.stroke(mouseX, mouseY)
+
+    if(mirrorIsDown) {
+        mirrorX = canvas.width - mouseX;
+        mirrorStyle.stroke(mirrorX, mouseY);
+    }
 }
 function onCanvasTouchStart(a) {
     if (a.touches.length == 1) {

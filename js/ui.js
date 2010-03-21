@@ -44,6 +44,14 @@ Menu.prototype = {
         this.container.appendChild(this.selector);
         c = document.createTextNode(" ");
         this.container.appendChild(c);
+
+        this.mirror = document.createElement("span");
+        this.mirror.className = "button";
+        this.mirror.innerHTML = "Mirror";
+        this.container.appendChild(this.mirror);
+
+        d = document.createTextNode(" | ");
+        this.container.appendChild(d);
         this.save = document.createElement("span");
         this.save.className = "button";
         this.save.innerHTML = "Save";
@@ -54,6 +62,7 @@ Menu.prototype = {
         this.clear.className = "button";
         this.clear.innerHTML = "Clear";
         this.container.appendChild(this.clear);
+
         d = document.createTextNode(" | ");
         this.container.appendChild(d);
         this.about = document.createElement("About");
